@@ -1,0 +1,17 @@
+﻿<nav>
+    <ul class="nav clearfix" data-bind="foreach: router.navigationModel">
+        <li class="nav__li">
+            <a class="nav__link" data-bind="attr: { href: hash }, html: title, css: { 'nav__link--selected': isActive }"></a>
+        </li>
+    </ul>
+</nav>
+
+<section class="loader" data-bind="css: { 'loader--active': router.isNavigating }">
+    <div class="loader__long"></div>
+    <div class="loader__dot"></div> 
+    <div class="loader__dot"></div>
+    <div class="loader__dot"></div> 
+</section>
+
+<section class="page__host" data-bind="router: { cacheViews:true, transition: 'entranceTweenMax' }">
+</section>

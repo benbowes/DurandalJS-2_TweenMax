@@ -1,0 +1,8 @@
+﻿<section>
+    <h2 data-bind="html:viewModel.displayName"></h2>
+    <blockquote data-bind="html:viewModel.description"></blockquote>
+    <h3>Features</h3>
+    <ul data-bind="foreach: viewModel.features">
+        <li data-bind="html: $data"></li>
+    </ul>
+</section>

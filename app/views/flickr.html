@@ -1,0 +1,23 @@
+﻿<section>
+
+    <h2 data-bind="html: displayName"></h2>
+    
+    <ul class="thumbs" data-bind="foreach: images">
+
+        <li class="thumb">
+
+           <a class="thumb__link" href="#" target="_blank" data-bind="attr: { href: link }">
+
+                <div class="thumb__loader">
+	    			<div class="thumb__loader__long"></div>
+				</div>
+
+                <span class="thumb__img" data-bind="style: {backgroundImage: 'url(' + media.m + ')'}, preloadIMG: media.m"></span>
+
+            </a>
+
+        </li>
+
+    </ul>
+
+</section>
