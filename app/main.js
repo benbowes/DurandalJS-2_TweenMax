@@ -13,12 +13,7 @@
         'TimelineLite': '../lib/greensock/src/minified/TweenMax.min',
         'TimelineMax': '../lib/greensock/src/minified/TweenMax.min',
     },
-    shim: {
-        /*'bootstrap': {
-            deps: ['jquery'],
-            exports: 'jQuery'
-       }*/
-    }
+    shim: {}
 });
 
 define(['durandal/system', 'durandal/app', 'durandal/viewLocator'],  function (system, app, viewLocator) {
@@ -26,12 +21,10 @@ define(['durandal/system', 'durandal/app', 'durandal/viewLocator'],  function (s
     system.debug(true);
     //>>excludeEnd("build");
 
-    app.title = 'Durandal Starter Kit';
+    app.title = 'Durandal Starter Kit + TweenMax';
 
     app.configurePlugins({
-        router:true,
-        dialog: true,
-        widget: true
+        router:true
     });
 
     app.start().then(function() {
