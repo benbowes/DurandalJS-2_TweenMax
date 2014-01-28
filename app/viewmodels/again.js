@@ -7,34 +7,30 @@
         viewModel:new shared.crapVM(),
         timeline:undefined,
         animatedNumber: ko.observable(),
+        dfd:undefined,
 
         // This fires first time this view loads and the DOM is ready (Views are cached)
         // It passes the partial view that this view model is associated with
         attached: function (view) {
             this.$view = $(view);
-            this.timeline = new shared.defaultTimelineAnimation(this.$view);
+            this.timeline = new shared.defaultTimelineAnimation(this.$view, this.tweenMaxAnimationCompleted, this);
             this.animateText();
         },
 
         // This fires every time this view loads but is fired before the DOM is ready (TweenMax needs the DOM)
         activate: function(){
             this.animatedNumber(0),
-            this.$view ? this.animateIn(): null;
+            (this.$view !== undefined) ? this.animateIn(): null;
         },
 
         // This fires when you attempt to leave the page by navigating away
         canDeactivate: function () {
             var self = this;
-           
-            return system.defer(function(dfd) {
-                self.animateOut();
-                setTimeout(function(){
-
-                    TweenMax.killTweensOf(self);
-                    
-                    dfd.resolve(true);
-                }, (self.timeline.duration() * 1000) );
-            
+           	
+           	self.animateOut();
+           	
+            return system.defer(function(dfd){
+            	self.dfd = dfd;
             });
         },
 
@@ -65,6 +61,12 @@
                 overwrite:1,
                 ease:Linear.easeNone
             });
+        },
+        
+        // TweenMax callback used to resolve the deferred upon animation complete
+        tweenMaxAnimationCompleted: function(scope){
+	       	TweenMax.killTweensOf(scope);
+        	scope.dfd.resolve(true);
         }
 
     };

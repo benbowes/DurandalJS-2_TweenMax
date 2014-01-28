@@ -12,16 +12,16 @@
         images: ko.observableArray([]),
         timeline:undefined,
         loaderTimeline:undefined,
+        dfd:undefined,
 
         // This fires first time this view loads and the DOM is ready (Views are cached)
         // It passes the partial view that this view model is associated with
         attached: function (view) {
-            this.$view = $(view);
-            this.timeline = new TimelineMax();
-
-            this.loaderTimeline = new shared.animatedLoaderSmall(this.$view.find(".thumb__loader"));
             
-            this.timeline.timeScale(1).staggerFromTo(this.$view.find("h2, blockquote, h3, li, .alert"), 
+            this.$view = $(view);
+            this.timeline = new TimelineMax({ onReverseComplete:this.tweenMaxAnimationCompleted, onReverseCompleteParams:[this] });
+            this.loaderTimeline = new shared.animatedLoaderSmall( this.$view.find(".thumb__loader") );
+            this.timeline.timeScale(1).staggerFromTo( this.$view.find("h2, blockquote, h3, li, .alert"), 
                 0.4, 
                 {
                     css:{'opacity':0, 'top':"40px", 'position':'relative'}
@@ -37,14 +37,12 @@
         activate: function () {
             var self = this;
 
-            if(this.$view !== undefined){
-                self.animateIn();
-            }
+            (self.$view !== undefined) ? self.animateIn(): null;
 
             if (self.images().length > 0) {
                 return;
             }else{
-                return http.jsonp('http://api.flickr.com/services/feeds/photos_public.gne', { tags: self.displayName, tagmode: 'any', format: 'json' }, 'jsoncallback').then(function(response) {
+                return http.jsonp( 'http://api.flickr.com/services/feeds/photos_public.gne', { tags: self.displayName, tagmode: 'any', format: 'json' }, 'jsoncallback').then(function(response) {
                     self.images(response.items);
                 });
             }
@@ -55,10 +53,8 @@
             var self = this;
             self.animateOut();
 
-            return system.defer(function(dfd) {
-                setTimeout((function(){
-                   dfd.resolve(true); 
-                }), self.timeline.duration() * 1000 );
+            return system.defer(function(dfd){
+            	self.dfd = dfd;
             });
         },
 
@@ -70,6 +66,11 @@
         // On animate away my tweenmax timeline intro animation reverses at 1.5 times speed
         animateOut: function(){
             this.timeline.timeScale(1.5).reverse();
+        },
+        
+        // TweenMax callback used to resolve the deferred upon animation complete
+        tweenMaxAnimationCompleted: function(scope){
+        	scope.dfd.resolve(true);
         }
 
     };

@@ -16,7 +16,7 @@
                 },
                 {
                     route: 'flickr',
-                    title:'Flickr Page',
+                    title:'Flickr Ajax',
                     moduleId: 'viewmodels/flickr',
                     nav: true
                 },
