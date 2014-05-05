@@ -43,7 +43,13 @@
                 return;
             }else{
                 return http.jsonp( 'http://api.flickr.com/services/feeds/photos_public.gne', { tags: self.displayName, tagmode: 'any', format: 'json' }, 'jsoncallback').then(function(response) {
-                    self.images(response.items);
+                    
+                    for(var i=0; i<response.items.length; i++){
+                        self.images.push({
+                            "image": String(response.items[i].media.m).replace("m.jpg", "b_d.jpg"),
+                            "link": response.items[i].link
+                        })
+                    }
                 });
             }
         },
