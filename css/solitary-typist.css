@@ -25,15 +25,18 @@ li{
 
 .page__host{
     padding: 20px;
+    max-width: 850px;
+    margin: 0 auto;
 }
 .nav{
     margin:0;
     padding:0;
     border: 0 solid #ccc;
     border-width: 0 0 2px 0;
+    text-align: center;
 }
 .nav__li{
-    float:left;
+    display:inline-block;
     list-style: none;
 }
 .nav__link{
